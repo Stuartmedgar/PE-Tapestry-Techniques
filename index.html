@@ -1,0 +1,1498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PE Formative Assessment Techniques</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        header {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        h1 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 1.8em;
+        }
+        
+        .subtitle {
+            color: #666;
+            font-size: 0.95em;
+            margin-bottom: 15px;
+        }
+        
+        .controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .search-box {
+            flex: 1;
+            min-width: 200px;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        .search-box:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .filter-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .filter-btn {
+            padding: 10px 20px;
+            border: 2px solid #667eea;
+            background: white;
+            color: #667eea;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .filter-btn:hover {
+            background: #f0f0ff;
+        }
+        
+        .filter-btn.active {
+            background: #667eea;
+            color: white;
+        }
+        
+        .stats-bar {
+            background: #f8f9ff;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .stat-number {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #667eea;
+        }
+        
+        .stat-label {
+            color: #666;
+            font-size: 0.9em;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #5568d3;
+        }
+        
+        .btn-secondary {
+            background: #e0e0e0;
+            color: #666;
+        }
+        
+        .btn-secondary:hover {
+            background: #d0d0d0;
+        }
+        
+        .btn-danger {
+            background: #ff4757;
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background: #ee3344;
+        }
+        
+        .btn-success {
+            background: #2ecc71;
+            color: white;
+        }
+        
+        .btn-success:hover {
+            background: #27ae60;
+        }
+        
+        .btn-small {
+            padding: 5px 10px;
+            font-size: 12px;
+        }
+        
+        .techniques-grid {
+            display: grid;
+            gap: 15px;
+        }
+        
+        .technique-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+            transition: transform 0.2s, box-shadow 0.2s;
+            position: relative;
+        }
+        
+        .technique-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+        }
+        
+        .technique-card.expanded {
+            background: #f8f9ff;
+        }
+        
+        .technique-card.voted {
+            border: 3px solid #667eea;
+            background: #f8f9ff;
+        }
+        
+        .technique-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        
+        .technique-number {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 30px;
+            font-weight: bold;
+            font-size: 0.9em;
+            margin-right: 10px;
+        }
+        
+        .vote-section {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+        
+        .icon-btn {
+            background: none;
+            border: none;
+            font-size: 1.3em;
+            cursor: pointer;
+            transition: transform 0.2s;
+            padding: 5px;
+        }
+        
+        .icon-btn:hover {
+            transform: scale(1.2);
+        }
+        
+        .delete-technique-btn:hover {
+            color: #ff4757;
+        }
+        
+        .vote-btn.voted {
+            animation: pulse 0.3s ease-in-out;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+        
+        .expand-icon {
+            color: #667eea;
+            font-size: 1.5em;
+            cursor: pointer;
+            transition: transform 0.3s;
+            user-select: none;
+        }
+        
+        .technique-card.expanded .expand-icon {
+            transform: rotate(180deg);
+        }
+        
+        .technique-content {
+            cursor: pointer;
+            user-select: none;
+        }
+        
+        .technique-title {
+            font-size: 1.2em;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+        }
+        
+        .technique-description {
+            color: #666;
+            line-height: 1.6;
+            font-size: 0.95em;
+        }
+        
+        .examples-section {
+            display: none;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 2px solid #e0e0e0;
+        }
+        
+        .examples-section.show {
+            display: block;
+        }
+        
+        .examples-title {
+            font-weight: 600;
+            color: #667eea;
+            margin-bottom: 12px;
+            font-size: 0.95em;
+        }
+        
+        .example {
+            background: #f8f9ff;
+            padding: 12px;
+            padding-right: 70px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            border-left: 4px solid #667eea;
+            line-height: 1.6;
+            position: relative;
+            font-size: 0.9em;
+        }
+        
+        .example-number {
+            font-weight: 600;
+            color: #667eea;
+            margin-right: 5px;
+        }
+        
+        .example-actions {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            display: flex;
+            gap: 5px;
+        }
+        
+        .example-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.1em;
+            padding: 2px 5px;
+            opacity: 0.6;
+            transition: opacity 0.2s;
+        }
+        
+        .example-btn:hover {
+            opacity: 1;
+        }
+        
+        .add-example-btn-inline {
+            margin-top: 10px;
+        }
+        
+        .add-technique-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: #2ecc71;
+            color: white;
+            border: none;
+            font-size: 2em;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+            z-index: 100;
+            transition: all 0.3s;
+        }
+        
+        .add-technique-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+        }
+        
+        .footer {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 20px;
+            text-align: center;
+            color: #666;
+            font-size: 0.9em;
+            line-height: 1.8;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .modal.show {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            max-width: 600px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        .modal-content h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+        }
+        
+        .modal-content p {
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+        
+        .modal-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #333;
+        }
+        
+        .form-group input[type="text"],
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            font-size: 14px;
+            font-family: inherit;
+        }
+        
+        .form-group textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+        
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .examples-inputs {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .example-input-row {
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+        }
+        
+        .example-input-row input {
+            flex: 1;
+            padding: 8px;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+        
+        .example-input-row input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.5em;
+            }
+            
+            .technique-card {
+                padding: 15px;
+            }
+            
+            .controls {
+                flex-direction: column;
+            }
+            
+            .search-box {
+                width: 100%;
+            }
+            
+            .stats-bar {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .add-technique-btn {
+                bottom: 20px;
+                right: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🏃‍♂️ PE Formative Assessment Techniques</h1>
+            <p class="subtitle">Vote, edit, and customize techniques for your department</p>
+            
+            <div class="controls">
+                <input type="text" class="search-box" id="searchBox" placeholder="Search techniques...">
+            </div>
+            
+            <div class="filter-buttons">
+                <button class="filter-btn active" data-filter="all">All Techniques</button>
+                <button class="filter-btn" data-filter="voted">Voted Only</button>
+                <button class="filter-btn" data-filter="not-voted">Not Voted</button>
+            </div>
+            
+            <div class="stats-bar">
+                <div>
+                    <div class="stat-item">
+                        <span class="stat-number" id="votedCount">0</span>
+                        <span class="stat-label">techniques voted valuable</span>
+                    </div>
+                </div>
+                <div class="action-buttons">
+                    <button class="btn btn-primary" id="shareBtn">📤 Share</button>
+                    <button class="btn btn-secondary" id="exportBtn">💾 Export</button>
+                    <button class="btn btn-secondary" id="importBtn">📥 Import</button>
+                    <button class="btn btn-secondary" id="resetBtn">🔄 Reset Votes</button>
+                    <button class="btn btn-danger" id="removeBtn">🗑️ Remove Unvoted</button>
+                </div>
+            </div>
+        </header>
+        
+        <div class="techniques-grid" id="techniquesGrid"></div>
+        
+        <button class="add-technique-btn" id="addTechniqueBtn" title="Add New Technique">+</button>
+        
+        <div class="footer">
+            Based on Dylan Wiliam's "Embedded Formative Assessment"<br>
+            ⭐ Vote • ✏️ Edit • 🗑️ Delete • ➕ Add New
+        </div>
+    </div>
+
+    <!-- Confirmation Modal -->
+    <div class="modal" id="confirmModal">
+        <div class="modal-content">
+            <h2>Confirm Action</h2>
+            <p id="modalMessage"></p>
+            <div class="modal-buttons">
+                <button class="btn btn-danger" id="confirmBtn">Confirm</button>
+                <button class="btn btn-secondary" id="cancelBtn">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add/Edit Technique Modal -->
+    <div class="modal" id="techniqueModal">
+        <div class="modal-content">
+            <h2 id="techniqueModalTitle">Add New Technique</h2>
+            <div class="form-group">
+                <label for="techniqueTitle">Technique Title *</label>
+                <input type="text" id="techniqueTitle" required>
+            </div>
+            <div class="form-group">
+                <label for="techniqueDescription">Description *</label>
+                <textarea id="techniqueDescription" required></textarea>
+            </div>
+            <div class="form-group">
+                <label>Examples (at least one required)</label>
+                <div class="examples-inputs" id="examplesContainer"></div>
+                <button type="button" class="btn btn-secondary btn-small" id="addExampleBtn" style="margin-top: 10px;">+ Add Example</button>
+            </div>
+            <div class="modal-buttons">
+                <button type="button" class="btn btn-success" id="saveTechniqueBtn">Save Technique</button>
+                <button type="button" class="btn btn-secondary" id="cancelTechniqueBtn">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hidden file input for import -->
+    <input type="file" id="fileInput" accept=".json" style="display: none;">
+
+    <script>
+        const defaultTechniques = [
+            {
+                id: 1,
+                title: "Traffic Lights",
+                description: "Students show red/yellow/green cards to indicate understanding or confidence level",
+                examples: [
+                    "During basketball dribbling practice, students hold up green (confident with weak hand), yellow (need more practice), or red (struggling with technique)",
+                    "In gymnastics, after learning a new balance, students show their card to indicate if they can hold it for 5 seconds (green), 3 seconds (yellow), or less than 3 seconds (red)",
+                    "During fitness testing, students use traffic lights to show if they met their target heart rate zone (green), came close (yellow), or missed it (red)"
+                ]
+            },
+            {
+                id: 2,
+                title: "Two Stars and a Wish",
+                description: "Feedback format: two things done well, one area for improvement",
+                examples: [
+                    "After watching a gymnastics routine: 'Your landing was stable and your arms were straight. I wish you'd point your toes throughout.'",
+                    "Observing a tennis serve: 'Your ball toss was consistent and you had great follow-through. I wish you'd bend your knees more for extra power.'",
+                    "Watching a swimming stroke: 'Your breathing timing was perfect and your kicks were strong. I wish you'd extend your arm further on the reach.'"
+                ]
+            },
+            {
+                id: 3,
+                title: "Think-Pair-Share",
+                description: "Students think individually, discuss with partner, then share with class",
+                examples: [
+                    "'Think about what makes a good chest pass. Discuss with your partner. Now share with the class.'",
+                    "'Think about which muscles you're using during a plank. Turn to your partner and compare ideas. Who wants to share what you discussed?'",
+                    "'Consider the best strategy for your team in capture the flag. Discuss with your partner for 2 minutes. Now let's hear some ideas.'"
+                ]
+            },
+            {
+                id: 4,
+                title: "Pose-Pause-Pounce-Bounce",
+                description: "Ask question, pause, select student (pounce), bounce response to another student",
+                examples: [
+                    "'What should your knees do during a squat?' [pause 5 seconds] 'Jamie?' [Jamie answers] 'Do you agree, Marcus?'",
+                    "'Why do we warm up before exercise?' [pause] 'Chen?' [Chen responds] 'Can you add to that, Sofia?'",
+                    "'What's the purpose of follow-through in throwing?' [pause] 'Aisha?' [Aisha explains] 'Does everyone agree? Thoughts, David?'"
+                ]
+            },
+            {
+                id: 5,
+                title: "Mini Whiteboards",
+                description: "Students write responses on small whiteboards for instant whole-class assessment",
+                examples: [
+                    "'Draw the flight path of a shuttlecock during a clear shot in badminton'",
+                    "'Sketch the proper foot position for a basketball free throw and label the key points'",
+                    "'Write down three muscles used in a push-up and hold up your boards'"
+                ]
+            },
+            {
+                id: 6,
+                title: "Exit Passes",
+                description: "Quick assessment as students leave (e.g., 'Show me one skill you learned')",
+                examples: [
+                    "Before leaving: 'Demonstrate one proper volleyball serve or write down the three key points'",
+                    "'On your exit card, draw one stretch we learned today and write which muscle group it targets'",
+                    "'Show me your best defensive stance in basketball before you leave the gym'"
+                ]
+            },
+            {
+                id: 7,
+                title: "Peer Improvement of Homework",
+                description: "Students give each other feedback on practice/skills",
+                examples: [
+                    "Students film their soccer skills at home, then give each other coaching feedback in class",
+                    "Partners review each other's fitness logs and suggest one improvement to their training routine",
+                    "Students watch each other's recorded dance sequences and provide two stars and a wish feedback"
+                ]
+            },
+            {
+                id: 8,
+                title: "Colored Cups",
+                description: "Red/yellow/green cups on stations to signal if group needs help",
+                examples: [
+                    "At fitness stations: green cup means 'we've got this,' yellow means 'questions but working,' red means 'need teacher help now'",
+                    "During small-group skill practice in badminton: groups display cup to show their progress level",
+                    "In circuit training: each station has cups so teacher can see where to provide support without interrupting flow"
+                ]
+            },
+            {
+                id: 9,
+                title: "ABCD Corners",
+                description: "Students move to room corners labeled A, B, C, D based on their answer",
+                examples: [
+                    "'Which is most important in netball shooting? A-elbow position B-follow through C-knee bend D-focus point. Go to your corner!'",
+                    "'What's the primary benefit of interval training? A-strength B-endurance C-flexibility D-power. Move to your answer!'",
+                    "'Which phase of a sprint is most important? A-start B-acceleration C-max speed D-finish. Choose your corner!'"
+                ]
+            },
+            {
+                id: 10,
+                title: "No Hands Up",
+                description: "Teacher selects students rather than volunteers (cold calling)",
+                examples: [
+                    "'I'm going to select someone to demonstrate a forward roll. Get ready... Aisha, please show us.'",
+                    "'I need someone to explain the triple jump technique. Let me see... Marcus, talk us through it.'",
+                    "'Who can demonstrate proper baton passing? Everyone ready... Jamie, come show us.'"
+                ]
+            },
+            {
+                id: 11,
+                title: "Hot-Seat Questioning",
+                description: "Intense questioning of one student while others observe",
+                examples: [
+                    "After a dance performance: intensively question one dancer about their movement choices, timing, and spatial awareness",
+                    "Put a student in the hot seat after their penalty kick: 'Where were you looking? How did you decide direction? What was your approach strategy?'",
+                    "Question a student about their fitness plan: 'Why this exercise? How many reps? What's the target heart rate? Which muscle groups?'"
+                ]
+            },
+            {
+                id: 12,
+                title: "Student Reporter",
+                description: "One student reports back on group's progress or understanding",
+                examples: [
+                    "After small-sided soccer games: 'Maya, report back on your team's defensive strategy'",
+                    "'Carlos, tell us what your group discovered about effective teamwork in ultimate frisbee'",
+                    "'Sophie, share your group's findings about which warm-up exercises raised heart rate most effectively'"
+                ]
+            },
+            {
+                id: 13,
+                title: "Three Best Samples Discussion",
+                description: "Compare three demonstrations to identify quality criteria",
+                examples: [
+                    "Show three students performing tennis serves, discuss which technique elements are strongest in each",
+                    "Watch three different approaches to the high jump and analyze what makes each effective",
+                    "Compare three students' layups and identify the best elements of footwork, ball control, and finish"
+                ]
+            },
+            {
+                id: 14,
+                title: "Real-Time Test",
+                description: "Quick skill checks during activity",
+                examples: [
+                    "Walk around during basketball practice with clipboard, quickly checking each student's pivot foot technique",
+                    "During swimming laps, assess each student's breathing technique and note on checklist",
+                    "In cricket practice, quickly observe and record each student's bowling action for one specific criterion"
+                ]
+            },
+            {
+                id: 15,
+                title: "Best Examples Discussion",
+                description: "Analyze excellent demonstrations to identify success criteria",
+                examples: [
+                    "'Watch these three forward rolls. What makes them high quality? What criteria should we use?'",
+                    "'Look at these excellent football passes. What do they all have in common? Let's create our success criteria.'",
+                    "'Here are three great badminton serves. What elements make them successful? Let's list the key features.'"
+                ]
+            },
+            {
+                id: 16,
+                title: "Ask the Audience",
+                description: "Student asks classmates for help when stuck",
+                examples: [
+                    "Student struggling with handstand: 'Who can give Sarah a tip about hand placement?'",
+                    "'David's having trouble with his javelin grip. Can someone who's got it help him out?'",
+                    "'Emma needs advice on her butterfly stroke breathing. Audience, what suggestions do you have?'"
+                ]
+            },
+            {
+                id: 17,
+                title: "Phone a Friend",
+                description: "Student can consult a peer before answering",
+                examples: [
+                    "'You have 30 seconds to consult someone about how to improve your triple jump approach before I assess you'",
+                    "'Need help with the rules? You can phone a friend for 15 seconds before you answer'",
+                    "'Stuck on the correct grip? Phone a friend quickly and then show me your best attempt'"
+                ]
+            },
+            {
+                id: 18,
+                title: "If You've Learned It, Help Someone Who Hasn't",
+                description: "Peer teaching during practice",
+                examples: [
+                    "'If you can do three consecutive keepie-uppies, find someone who can't and coach them'",
+                    "'Once you've mastered the egg beater kick in water polo, partner with someone still learning it'",
+                    "'Got the proper squat form? Great! Help two other people who are still working on it'"
+                ]
+            },
+            {
+                id: 19,
+                title: "Strengths and Weaknesses Discussion",
+                description: "Analyze performance for both positives and areas to improve",
+                examples: [
+                    "Watch video of class relay race: 'What did we do well? What caused us to drop the baton?'",
+                    "After dodgeball game: 'What were our team's strengths? Where did we struggle? Let's discuss both.'",
+                    "Review footage of gymnastics routine: 'Identify three strong elements and two areas for improvement'"
+                ]
+            },
+            {
+                id: 20,
+                title: "Student Engagement Techniques",
+                description: "Strategies to keep all students actively participating",
+                examples: [
+                    "Use 'last person to touch the ball must shoot' in basketball to ensure all players handle the ball",
+                    "In volleyball: 'Every team member must touch the ball before you can return it over the net'",
+                    "Tag rugby rule: 'You must pass to at least three different players before scoring a try'"
+                ]
+            },
+            {
+                id: 21,
+                title: "Go Fifty-Fifty",
+                description: "Split class by opinion/response for discussion",
+                examples: [
+                    "'Stand on this line if you think defense is most important in ultimate frisbee, this line if you think offense is'",
+                    "'Move to the left if you believe interval training is better, right if you prefer steady-state cardio'",
+                    "'North wall if power is more important in tennis, south wall if placement matters more'"
+                ]
+            },
+            {
+                id: 22,
+                title: "Popsicle Sticks",
+                description: "Random selection using names on sticks",
+                examples: [
+                    "Pull sticks to randomly select who demonstrates the next swimming stroke",
+                    "Use sticks to choose team captains fairly for small-sided games",
+                    "Draw a stick to determine who explains the next drill to the class"
+                ]
+            },
+            {
+                id: 23,
+                title: "Reporter at Random",
+                description: "Randomly select group reporter after discussion",
+                examples: [
+                    "After group fitness circuit design: randomly select one member from each group to explain their circuit",
+                    "'Each group design a warm-up. I'll randomly pick someone to present it, so everyone be ready.'",
+                    "After tactical discussion in hockey: 'I'll pick one person randomly to share your team's strategy'"
+                ]
+            },
+            {
+                id: 24,
+                title: "Red or Green Disks",
+                description: "Simple binary response system (ready/not ready, agree/disagree)",
+                examples: [
+                    "During track practice, flip to green when you've completed your lap at target pace, red if you missed it",
+                    "'Show green if you're ready for assessment, red if you need more practice time'",
+                    "'Green disk if you agree with that coaching point, red if you have questions'"
+                ]
+            },
+            {
+                id: 25,
+                title: "ABCD Cards",
+                description: "Students hold up A, B, C, or D cards to answer multiple choice",
+                examples: [
+                    "'Hold up your answer: Which muscle group do push-ups primarily work? A-legs B-back C-chest D-core'",
+                    "'Show your card: What's the first thing to do when injured? A-ice B-stretch C-continue D-rest'",
+                    "'Cards up: Which skill is most important in badminton? A-power B-placement C-speed D-deception'"
+                ]
+            },
+            {
+                id: 26,
+                title: "Wait Time",
+                description: "Pause after asking questions to allow thinking time",
+                examples: [
+                    "Ask 'What's the key to a good spike in volleyball?' then count to 5 silently before accepting answers",
+                    "'What makes an effective warm-up?' [pause for 5 seconds] 'Now, who has an idea?'",
+                    "'Think about proper breathing during running' [wait 5 seconds] 'Okay, share your thoughts'"
+                ]
+            },
+            {
+                id: 27,
+                title: "Extended Wait Time",
+                description: "Longer pauses (10+ seconds) for complex questions",
+                examples: [
+                    "'How would you design a warm-up for a marathon runner?' [wait 15 seconds for thinking time]",
+                    "'What's the best strategy for a team losing by 2 goals with 10 minutes left?' [pause 12 seconds]",
+                    "'How does altitude affect athletic performance?' [wait 15 seconds before taking responses]"
+                ]
+            },
+            {
+                id: 28,
+                title: "If You Did Know, What Would You Say?",
+                description: "Encourages students to attempt answers",
+                examples: [
+                    "'You're not sure? OK, if you *did* know what makes a good penalty kick, what might you say?'",
+                    "'Not certain? Imagine you did know the answer about sprint starting technique - what would it be?'",
+                    "'Take a guess - if you knew why we cool down after exercise, what would your answer be?'"
+                ]
+            },
+            {
+                id: 29,
+                title: "If You Don't Know, I'll Come Back to You",
+                description: "Reduces anxiety, allows processing time",
+                examples: [
+                    "'Not ready yet, Marcus? That's fine, keep thinking and I'll check back in 2 minutes'",
+                    "'Need more time? No problem, I'll ask someone else and circle back to you'",
+                    "'Still processing? That's okay, keep thinking about it while I check with others'"
+                ]
+            },
+            {
+                id: 30,
+                title: "Evaluative and Interpretive Listening",
+                description: "Students listen to judge quality or meaning in demonstrations",
+                examples: [
+                    "'Listen to your partner's breathing during their run. What does it tell you about their pace?'",
+                    "'Listen to the sound of the basketball hitting the court. What does a good dribble sound like?'",
+                    "'Listen to the rhythm of your partner's swimming stroke. Is it smooth and consistent?'"
+                ]
+            },
+            {
+                id: 31,
+                title: "Hinge-Point Questions",
+                description: "Key questions that determine if class can move forward",
+                examples: [
+                    "Before progressing to game play: 'Show me your ready position in tennis' - if most can't, reteach before moving on",
+                    "'Can everyone demonstrate proper landing technique?' - must see this before teaching more complex jumps",
+                    "'Show me the grip for a forehand' - essential check before moving to rallying"
+                ]
+            },
+            {
+                id: 32,
+                title: "What Did We Learn Today?",
+                description: "Quick reflection at lesson end",
+                examples: [
+                    "Final huddle: 'Tell your partner one thing you learned about dodging in netball today'",
+                    "'Before you go, write one new skill you practiced today on the exit board'",
+                    "'Gather round - who can share one thing they'll remember from today's lesson?'"
+                ]
+            },
+            {
+                id: 33,
+                title: "Best Accent Competition",
+                description: "Fun way to practice verbal feedback (adaptable to PE contexts)",
+                examples: [
+                    "'Give your coaching feedback in your best sports commentator voice' (makes feedback fun and memorable)",
+                    "'Describe the play like you're a football commentator at the World Cup final'",
+                    "'Explain the technique like you're a legendary coach giving a motivational speech'"
+                ]
+            },
+            {
+                id: 34,
+                title: "Find the Errors and Fix Them",
+                description: "Identify and correct mistakes in technique demonstrations",
+                examples: [
+                    "Show video of deliberately flawed gymnastics routine: 'Spot the 5 technique errors and suggest corrections'",
+                    "'Watch my intentionally incorrect tennis serve. What's wrong and how should I fix it?'",
+                    "'I'm going to perform a plank with three mistakes. Find them and tell me the correct form.'"
+                ]
+            },
+            {
+                id: 35,
+                title: "Error Classification",
+                description: "Categorize common mistakes to understand patterns",
+                examples: [
+                    "After batting practice: 'Let's categorize your misses - were they timing, eye on ball, or stance issues?'",
+                    "'Look at these failed basketball shots. Are they distance, direction, or arc problems?'",
+                    "'Review your gymnastics attempts. Are errors due to balance, strength, or technique understanding?'"
+                ]
+            },
+            {
+                id: 36,
+                title: "Ranking Exemplars",
+                description: "Put demonstrations in order from weakest to strongest",
+                examples: [
+                    "Show 4 videos of layups: 'Put these in order from best to worst technique and explain your ranking'",
+                    "'Watch these five swimming turns. Rank them 1-5 and justify your choices'",
+                    "'Here are four different volleyball serves. Order them by effectiveness and explain why'"
+                ]
+            },
+            {
+                id: 37,
+                title: "C3B4ME",
+                description: "'See 3 Before Me' - ask 3 peers before asking teacher",
+                examples: [
+                    "'Before asking me about your badminton grip, check with 3 classmates first'",
+                    "'Stuck on the dance sequence? Consult three peers before coming to me'",
+                    "'Need help with your fitness plan? Get input from three other students first'"
+                ]
+            },
+            {
+                id: 38,
+                title: "Homework Help Board",
+                description: "Space where students post questions (adaptable for skill practice)",
+                examples: [
+                    "Whiteboard where students post: 'Can someone explain the offside rule?' with space for peer responses",
+                    "'Post your training questions on the board. Others can write answers before next class.'",
+                    "'Write your technique questions here. Classmates who know the answer can respond.'"
+                ]
+            },
+            {
+                id: 39,
+                title: "Preflight Checklist",
+                description: "Students check criteria before attempting skill",
+                examples: [
+                    "Before attempting a javelin throw, check: feet position, grip, shoulder back, eyes on target, release point",
+                    "'Before diving, run through: approach steps, arm position, head placement, body alignment'",
+                    "'Gymnastics routine checklist: starting position, sequence order, timing, finishing pose'"
+                ]
+            },
+            {
+                id: 40,
+                title: "I-You-We Checklist",
+                description: "Scaffold from teacher demo to peer work to independent practice",
+                examples: [
+                    "Swimming: 'I demonstrated freestyle breathing. You practiced with your partner. Now we'll all swim independently.'",
+                    "'I showed the volleyball serve. You tried it with feedback from a partner. Now we practice on our own.'",
+                    "'I modeled the defensive stance. You worked with a partner to practice. Now everyone apply it in the game.'"
+                ]
+            }
+        ];
+
+        // Load data from localStorage
+        let techniques = JSON.parse(localStorage.getItem('peTechniques')) || JSON.parse(JSON.stringify(defaultTechniques));
+        let votes = JSON.parse(localStorage.getItem('peVotes') || '{}');
+        let currentFilter = 'all';
+        let editingTechniqueId = null;
+        let nextId = Math.max(...techniques.map(t => t.id), 0) + 1;
+
+        const grid = document.getElementById('techniquesGrid');
+        const searchBox = document.getElementById('searchBox');
+        const votedCount = document.getElementById('votedCount');
+        const shareBtn = document.getElementById('shareBtn');
+        const exportBtn = document.getElementById('exportBtn');
+        const importBtn = document.getElementById('importBtn');
+        const fileInput = document.getElementById('fileInput');
+        const resetBtn = document.getElementById('resetBtn');
+        const removeBtn = document.getElementById('removeBtn');
+        const addTechniqueBtn = document.getElementById('addTechniqueBtn');
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const confirmModal = document.getElementById('confirmModal');
+        const modalMessage = document.getElementById('modalMessage');
+        const confirmBtn = document.getElementById('confirmBtn');
+        const cancelBtn = document.getElementById('cancelBtn');
+        const techniqueModal = document.getElementById('techniqueModal');
+        const techniqueModalTitle = document.getElementById('techniqueModalTitle');
+        const saveTechniqueBtn = document.getElementById('saveTechniqueBtn');
+        const cancelTechniqueBtn = document.getElementById('cancelTechniqueBtn');
+        const examplesContainer = document.getElementById('examplesContainer');
+        const addExampleBtn = document.getElementById('addExampleBtn');
+
+        let pendingAction = null;
+
+        function saveTechniques() {
+            localStorage.setItem('peTechniques', JSON.stringify(techniques));
+        }
+
+        function updateVoteCount() {
+            const count = Object.keys(votes).length;
+            votedCount.textContent = count;
+        }
+
+        function saveVotes() {
+            localStorage.setItem('peVotes', JSON.stringify(votes));
+            updateVoteCount();
+        }
+
+        function toggleVote(id) {
+            if (votes[id]) {
+                delete votes[id];
+            } else {
+                votes[id] = true;
+            }
+            saveVotes();
+            renderTechniques(getFilteredTechniques());
+        }
+
+        function getFilteredTechniques() {
+            let filtered = techniques;
+            
+            if (currentFilter === 'voted') {
+                filtered = techniques.filter(t => votes[t.id]);
+            } else if (currentFilter === 'not-voted') {
+                filtered = techniques.filter(t => !votes[t.id]);
+            }
+
+            const searchTerm = searchBox.value.toLowerCase();
+            if (searchTerm) {
+                filtered = filtered.filter(technique => 
+                    technique.title.toLowerCase().includes(searchTerm) ||
+                    technique.description.toLowerCase().includes(searchTerm) ||
+                    technique.examples.some(example => example.toLowerCase().includes(searchTerm))
+                );
+            }
+
+            return filtered;
+        }
+
+        function deleteTechnique(id) {
+            showModal(
+                'Are you sure you want to delete this technique? This cannot be undone.',
+                () => {
+                    techniques = techniques.filter(t => t.id !== id);
+                    delete votes[id];
+                    saveTechniques();
+                    saveVotes();
+                    renderTechniques(getFilteredTechniques());
+                    hideModal();
+                }
+            );
+        }
+
+        function editTechnique(id) {
+            editingTechniqueId = id;
+            const technique = techniques.find(t => t.id === id);
+            
+            techniqueModalTitle.textContent = 'Edit Technique';
+            document.getElementById('techniqueTitle').value = technique.title;
+            document.getElementById('techniqueDescription').value = technique.description;
+            
+            examplesContainer.innerHTML = '';
+            technique.examples.forEach(example => addExampleField(example));
+            
+            techniqueModal.classList.add('show');
+        }
+
+        function addExampleField(value = '') {
+            const row = document.createElement('div');
+            row.className = 'example-input-row';
+            row.innerHTML = `
+                <input type="text" placeholder="Enter example..." value="${value.replace(/"/g, '&quot;')}">
+                <button type="button" class="btn btn-danger btn-small" onclick="this.parentElement.remove()">✕</button>
+            `;
+            examplesContainer.appendChild(row);
+        }
+
+        function saveTechniqueFromModal() {
+            const title = document.getElementById('techniqueTitle').value.trim();
+            const description = document.getElementById('techniqueDescription').value.trim();
+            const exampleInputs = examplesContainer.querySelectorAll('input');
+            const examples = Array.from(exampleInputs)
+                .map(input => input.value.trim())
+                .filter(val => val.length > 0);
+            
+            if (!title || !description) {
+                alert('Please fill in title and description');
+                return;
+            }
+            
+            if (examples.length === 0) {
+                alert('Please add at least one example');
+                return;
+            }
+            
+            if (editingTechniqueId) {
+                const technique = techniques.find(t => t.id === editingTechniqueId);
+                technique.title = title;
+                technique.description = description;
+                technique.examples = examples;
+            } else {
+                techniques.push({
+                    id: nextId++,
+                    title: title,
+                    description: description,
+                    examples: examples
+                });
+            }
+            
+            saveTechniques();
+            hideTechniqueModal();
+            renderTechniques(getFilteredTechniques());
+        }
+
+        function deleteExample(techniqueId, exampleIndex) {
+            const technique = techniques.find(t => t.id === techniqueId);
+            if (technique.examples.length <= 1) {
+                alert('Cannot delete the last example. A technique must have at least one example.');
+                return;
+            }
+            
+            showModal(
+                'Delete this example?',
+                () => {
+                    technique.examples.splice(exampleIndex, 1);
+                    saveTechniques();
+                    renderTechniques(getFilteredTechniques());
+                    hideModal();
+                }
+            );
+        }
+
+        function editExample(techniqueId, exampleIndex) {
+            const technique = techniques.find(t => t.id === techniqueId);
+            const newValue = prompt('Edit example:', technique.examples[exampleIndex]);
+            
+            if (newValue !== null && newValue.trim()) {
+                technique.examples[exampleIndex] = newValue.trim();
+                saveTechniques();
+                renderTechniques(getFilteredTechniques());
+            }
+        }
+
+        function addExampleToTechnique(techniqueId) {
+            const technique = techniques.find(t => t.id === techniqueId);
+            const newValue = prompt('Enter new example:');
+            
+            if (newValue && newValue.trim()) {
+                technique.examples.push(newValue.trim());
+                saveTechniques();
+                renderTechniques(getFilteredTechniques());
+            }
+        }
+
+        function renderTechniques(filteredTechniques) {
+            grid.innerHTML = '';
+            
+            if (filteredTechniques.length === 0) {
+                grid.innerHTML = '<div style="background:white;padding:40px;border-radius:12px;text-align:center;color:#666;">No techniques found</div>';
+                return;
+            }
+            
+            filteredTechniques.forEach((technique, index) => {
+                const card = document.createElement('div');
+                card.className = 'technique-card' + (votes[technique.id] ? ' voted' : '');
+                card.setAttribute('data-technique-id', technique.id);
+                
+                const examplesHTML = technique.examples.map((example, exIndex) => `
+                    <div class="example">
+                        <div class="example-actions">
+                            <button class="example-btn example-edit-btn" data-technique-id="${technique.id}" data-example-index="${exIndex}" title="Edit">✏️</button>
+                            <button class="example-btn example-delete-btn" data-technique-id="${technique.id}" data-example-index="${exIndex}" title="Delete">🗑️</button>
+                        </div>
+                        <span class="example-number">Example ${exIndex + 1}:</span> ${example}
+                    </div>
+                `).join('');
+                
+                card.innerHTML = `
+                    <div class="technique-header">
+                        <div>
+                            <span class="technique-number">${index + 1}</span>
+                        </div>
+                        <div class="vote-section">
+                            <button class="icon-btn vote-btn ${votes[technique.id] ? 'voted' : ''}" data-id="${technique.id}" title="${votes[technique.id] ? 'Remove vote' : 'Vote valuable'}">
+                                ${votes[technique.id] ? '⭐' : '☆'}
+                            </button>
+                            <button class="icon-btn edit-technique-btn" data-id="${technique.id}" title="Edit">✏️</button>
+                            <button class="icon-btn delete-technique-btn" data-id="${technique.id}" title="Delete">🗑️</button>
+                            <span class="expand-icon" data-id="${technique.id}">▼</span>
+                        </div>
+                    </div>
+                    <div class="technique-content" data-id="${technique.id}">
+                        <div class="technique-title">${technique.title}</div>
+                        <div class="technique-description">${technique.description}</div>
+                    </div>
+                    <div class="examples-section">
+                        <div class="examples-title">📋 PE Examples:</div>
+                        ${examplesHTML}
+                        <button class="btn btn-secondary btn-small add-example-btn-inline add-example-to-technique-btn" data-technique-id="${technique.id}">+ Add Example</button>
+                    </div>
+                `;
+                
+                grid.appendChild(card);
+            });
+
+            // Add event listeners after rendering
+            addEventListeners();
+        }
+
+        function addEventListeners() {
+            // Vote buttons
+            document.querySelectorAll('.vote-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const id = parseInt(btn.dataset.id);
+                    toggleVote(id);
+                });
+            });
+
+            // Edit technique buttons
+            document.querySelectorAll('.edit-technique-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const id = parseInt(btn.dataset.id);
+                    editTechnique(id);
+                });
+            });
+
+            // Delete technique buttons
+            document.querySelectorAll('.delete-technique-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const id = parseInt(btn.dataset.id);
+                    deleteTechnique(id);
+                });
+            });
+
+            // Expand icons and technique content
+            document.querySelectorAll('.expand-icon, .technique-content').forEach(elem => {
+                elem.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const id = parseInt(elem.dataset.id);
+                    const card = document.querySelector(`.technique-card[data-technique-id="${id}"]`);
+                    if (card) {
+                        card.classList.toggle('expanded');
+                        const examplesSection = card.querySelector('.examples-section');
+                        examplesSection.classList.toggle('show');
+                    }
+                });
+            });
+
+            // Example edit buttons
+            document.querySelectorAll('.example-edit-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const techniqueId = parseInt(btn.dataset.techniqueId);
+                    const exampleIndex = parseInt(btn.dataset.exampleIndex);
+                    editExample(techniqueId, exampleIndex);
+                });
+            });
+
+            // Example delete buttons
+            document.querySelectorAll('.example-delete-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const techniqueId = parseInt(btn.dataset.techniqueId);
+                    const exampleIndex = parseInt(btn.dataset.exampleIndex);
+                    deleteExample(techniqueId, exampleIndex);
+                });
+            });
+
+            // Add example buttons
+            document.querySelectorAll('.add-example-to-technique-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const techniqueId = parseInt(btn.dataset.techniqueId);
+                    addExampleToTechnique(techniqueId);
+                });
+            });
+        }
+
+        function showModal(message, action) {
+            modalMessage.textContent = message;
+            pendingAction = action;
+            confirmModal.classList.add('show');
+        }
+
+        function hideModal() {
+            confirmModal.classList.remove('show');
+            pendingAction = null;
+        }
+
+        function showTechniqueModal() {
+            editingTechniqueId = null;
+            techniqueModalTitle.textContent = 'Add New Technique';
+            document.getElementById('techniqueTitle').value = '';
+            document.getElementById('techniqueDescription').value = '';
+            examplesContainer.innerHTML = '';
+            addExampleField();
+            techniqueModal.classList.add('show');
+        }
+
+        function hideTechniqueModal() {
+            techniqueModal.classList.remove('show');
+            editingTechniqueId = null;
+        }
+
+        // Filter button handlers
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                filterBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentFilter = btn.dataset.filter;
+                renderTechniques(getFilteredTechniques());
+            });
+        });
+
+        // Search handler
+        searchBox.addEventListener('input', () => {
+            renderTechniques(getFilteredTechniques());
+        });
+
+        // Share button
+        shareBtn.addEventListener('click', () => {
+            const votedTechniques = techniques.filter(t => votes[t.id]);
+            const summary = `PE Formative Assessment - Department Votes\n\n` +
+                `Total Techniques Voted Valuable: ${votedTechniques.length}/${techniques.length}\n\n` +
+                `Selected Techniques:\n` +
+                votedTechniques.map((t, i) => `${i + 1}. ${t.title}`).join('\n');
+            
+            if (navigator.share) {
+                navigator.share({
+                    title: 'PE Formative Assessment Votes',
+                    text: summary
+                });
+            } else {
+                navigator.clipboard.writeText(summary).then(() => {
+                    alert('Results copied to clipboard!');
+                });
+            }
+        });
+
+        // Export button
+        exportBtn.addEventListener('click', () => {
+            const data = {
+                techniques: techniques,
+                votes: votes,
+                exportDate: new Date().toISOString()
+            };
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `pe-techniques-${new Date().toISOString().split('T')[0]}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+        });
+
+        // Import button
+        importBtn.addEventListener('click', () => {
+            fileInput.click();
+        });
+
+        fileInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                try {
+                    const data = JSON.parse(event.target.result);
+                    if (data.techniques && Array.isArray(data.techniques)) {
+                        showModal(
+                            'Import will replace all current techniques and votes. Continue?',
+                            () => {
+                                techniques = data.techniques;
+                                votes = data.votes || {};
+                                nextId = Math.max(...techniques.map(t => t.id), 0) + 1;
+                                saveTechniques();
+                                saveVotes();
+                                renderTechniques(getFilteredTechniques());
+                                hideModal();
+                                alert('Import successful!');
+                            }
+                        );
+                    } else {
+                        alert('Invalid file format');
+                    }
+                } catch (error) {
+                    alert('Error reading file: ' + error.message);
+                }
+            };
+            reader.readAsText(file);
+            fileInput.value = '';
+        });
+
+        // Reset button
+        resetBtn.addEventListener('click', () => {
+            showModal(
+                'Are you sure you want to reset all votes? This cannot be undone.',
+                () => {
+                    votes = {};
+                    saveVotes();
+                    renderTechniques(getFilteredTechniques());
+                    hideModal();
+                }
+            );
+        });
+
+        // Remove button
+        removeBtn.addEventListener('click', () => {
+            const votedCount = Object.keys(votes).length;
+            const removeCount = techniques.length - votedCount;
+            showModal(
+                `This will permanently remove ${removeCount} unvoted techniques. Are you sure?`,
+                () => {
+                    const votedIds = Object.keys(votes).map(Number);
+                    techniques = techniques.filter(t => votedIds.includes(t.id));
+                    saveTechniques();
+                    renderTechniques(getFilteredTechniques());
+                    hideModal();
+                }
+            );
+        });
+
+        // Add technique button
+        addTechniqueBtn.addEventListener('click', showTechniqueModal);
+
+        // Add example button in modal
+        addExampleBtn.addEventListener('click', () => addExampleField());
+
+        // Save technique button
+        saveTechniqueBtn.addEventListener('click', saveTechniqueFromModal);
+
+        // Cancel technique button
+        cancelTechniqueBtn.addEventListener('click', hideTechniqueModal);
+
+        // Modal handlers
+        confirmBtn.addEventListener('click', () => {
+            if (pendingAction) pendingAction();
+        });
+
+        cancelBtn.addEventListener('click', hideModal);
+
+        confirmModal.addEventListener('click', (e) => {
+            if (e.target === confirmModal) hideModal();
+        });
+
+        techniqueModal.addEventListener('click', (e) => {
+            if (e.target === techniqueModal) hideTechniqueModal();
+        });
+
+        // Initial render
+        updateVoteCount();
+        renderTechniques(getFilteredTechniques());
+    </script>
+</body>
+</html>
